@@ -1,0 +1,80 @@
+CREATE TABLE BikeWorld(
+    NIT INTEGER NOT NULL,
+    Correo VARCHAR(10) NOT NULL,
+    Telefono VARCHAR(7) NOT NULL,
+    Direccion VARCHAR(10) NOT NULL
+);
+CREATE TABLE Cliente(
+    TipoDocumento INTEGER NOT NULL,
+    NumeroDocumento VARCHAR(10) NOT NULL,
+    Nombre VARCHAR(20) NOT NULL,
+    Correo VARCHAR(10) NOT NULL,
+    Telefono NUMBER(10) NOT NULL,
+    DireccionCliente INTEGER NOT NULL
+);
+CREATE TABLE HistorialCliente(
+    TipoDocumento_C INTEGER NOT NULL,
+    NumeroDocumento_C VARCHAR(10) NOT NULL,
+    NumerodeCompras INTEGER NOT NULL,
+    MontoCompras INTEGER
+);
+CREATE TABLE Direccion(
+    Direccionid INTEGER NOT NULL,
+    Ciudad VARCHAR(50),
+    CodigoPostal INTEGER
+);
+CREATE TABLE OrdenDeVenta(
+    OrdenVentaid INTEGER NOT NULL,
+    FechaOrden DATE,
+    FechaEntrega DATE,
+    ValorTotal INTEGER,
+    PesoTotal INTEGER,
+    ProductidOrdVent INTEGER NOT NULL,
+    DirecionidOrdVent INTEGER NOT NULL
+);
+CREATE TABLE ProgramaDistribucion(
+    ProgramaDisid VARCHAR(10) NOT NULL,
+    MetodoEntrega VARCHAR(5),
+    OrdenVentaidPDistrib INTEGER NOT NULL
+);
+CREATE TABLE Categoria(
+    Categoriaid VARCHAR(10) NOT NULL,
+    NombreCategoria VARCHAR(50),
+    ProductoidCategoria INTEGER
+);
+CREATE TABLE Producto(
+    Productoid INTEGER NOT NULL,
+    Nombre VARCHAR(50) NOT NULL,
+    Precio INTEGER NOT NULL,
+    Peso INTEGER,
+    Marca VARCHAR(50) NOT NULL,
+    Detalle XMLTYPE
+);
+CREATE TABLE Catalogo(
+    Catalogoid INTEGER NOT NULL,
+    Tienda VARCHAR(50),
+    FechaTemporada DATE,
+    NombreCatalogo VARCHAR(100)
+);
+CREATE TABLE Vendedor(
+    TipoDocumentoV INTEGER NOT NULL,
+    NumeroDocumentoV VARCHAR(10) NOT NULL,
+    Tienda VARCHAR(50) NOT NULL,
+    NIT INTEGER NOT NULL,
+    Correo VARCHAR(20) NOT NULL
+);
+CREATE TABLE CatalogoVendedor(
+    TipoDocumentoV INTEGER NOT NULL,
+    NumeroDocumentoV VARCHAR(10) NOT NULL,
+    Catalogoid INTEGER NOT NULL
+);
+CREATE TABLE ClienteOrdenDeVenta(
+    TipoDocumento INTEGER NOT NULL,
+    NumeroDocumento VARCHAR(10) NOT NULL,
+    OrdenVentaid INTEGER NOT NULL
+);
+CREATE TABLE ProductoCatalogo(
+    Catalogoid INTEGER NOT NULL,
+    Productoid INTEGER NOT NULL,
+    NumeroCatalogo VARCHAR(5)
+);

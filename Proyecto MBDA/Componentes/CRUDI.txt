@@ -1,0 +1,297 @@
+
+
+create or replace PACKAGE BODY PC_PRODUCTO IS 
+
+    PROCEDURE AD_Producto (xProductoid IN NUMBER,xNombre IN VARCHAR,xPrecio IN float,xMarca IN VARCHAR,xPeso IN float) IS
+    BEGIN 
+        INSERT INTO Producto(Productoid,Nombre,Precio,Marca,Peso) VALUES (xProductoid,xNombre,xPrecio,xMarca,xPeso);
+        COMMIT;
+        EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR (-20010,'No se puede insertar el Producto');
+    END;
+
+    PROCEDURE MO_Producto (xProductoid IN NUMBER,xNombre IN VARCHAR,xPrecio IN float,xMarca IN VARCHAR,xPeso IN float) IS
+    BEGIN
+        UPDATE Producto SET Nombre = xNombre, Precio = xPrecio, Marca = xMarca, Peso = xPeso 
+            WHERE xProductoid = Productoid;
+        COMMIT;
+        EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR (-20000, 'No se puede modificar Producto');
+    END;
+
+    PROCEDURE DEL_Producto (xProductoid IN NUMBER) IS
+    BEGIN 
+        DELETE Producto WHERE xProductoid = Productoid;
+        COMMIT;
+        EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR(-20020, 'No se puede eliminar Producto');
+    END;
+
+    PROCEDURE AD_Catalogo (xCatalogoid IN VARCHAR,xTienda IN VARCHAR,xFechaTemporada IN date,xnombreCatalogo IN VARCHAR) IS
+    BEGIN 
+        INSERT INTO Catalogo(Catalogoid,Tienda,FechaTemporada,nombreCatalogo) VALUES (xCatalogoid,xTienda,xFechaTemporada,xnombreCatalogo);
+        COMMIT;
+        EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR (-20010,'No se puede insertar el Catalogo');
+    END;
+
+    PROCEDURE MO_Catalogo (xCatalogoid IN VARCHAR,xTienda IN VARCHAR,xFechaTemporada IN date,xnombreCatalogo IN VARCHAR) IS 
+    BEGIN
+        UPDATE Catalogo SET Tienda = xTienda, FechaTemporada = xFechaTemporada, NombreCatalogo = xnombreCatalogo
+            WHERE xCatalogoid = Catalogoid;
+        COMMIT;
+        EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR (-20000, 'No se puede modificar Catalogo');
+        END;
+
+    PROCEDURE AD_Categoria (xCategoriaid IN VARCHAR,xNombreCategoria IN VARCHAR) IS 
+    BEGIN 
+        INSERT INTO Categoria(Categoriaid,NombreCategoria) VALUES(xCategoriaid,xNombreCategoria);
+        COMMIT;
+        EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR (-20010,'No se puede insertar el Categoria');
+    END;
+
+    PROCEDURE MO_Categoria (xCategoriaid IN VARCHAR,xNombreCategoria IN VARCHAR) IS 
+    BEGIN
+        UPDATE Categoria SET NombreCategoria = xNombreCategoria WHERE xCategoriaid = Categoriaid;
+        COMMIT;
+        EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR (-20000, 'No se puede modificar Categoria');
+    END;
+
+    FUNCTION CO_Productos RETURN SYS_REFCURSOR IS CO_PRO SYS_REFCURSOR;
+    BEGIN
+        OPEN CO_PRO FOR
+            SELECT * FROM Producto;
+        RETURN CO_PRO;
+    END;
+
+    FUNCTION CO_Catalogo RETURN SYS_REFCURSOR IS CO_CAL SYS_REFCURSOR;
+    BEGIN
+        OPEN CO_CAL FOR
+            SELECT * FROM Catalogo;
+        RETURN CO_CAL;
+    END;
+
+    FUNCTION CO_Categoria RETURN SYS_REFCURSOR IS CO_CAG SYS_REFCURSOR;
+    BEGIN
+        OPEN CO_CAG FOR
+            SELECT * FROM Categoria;
+        RETURN CO_CAG;
+    END;
+END PC_PRODUCTO;
+
+
+
+
+CREATE OR REPLACE PACKAGE BODY PC_VENTAS IS 
+
+    PROCEDURE AD_OrdendeVenta (xOrdenVentaid IN NUMBER,xFechaOrden IN DATE,xFechaEntrega IN DATE,xValorTotal IN NUMBER,xPesoTotal IN NUMBER,xProductidOrdVent IN NUMBER,xDireccionidOrdVent IN NUMBER) IS
+    BEGIN
+        INSERT INTO OrdenDeVenta(OrdenVentaid,FechaOrden,FechaEntrega,ValorTotal,PesoTotal,ProductidOrdVent,DireccionidOrdVent) VALUES (xOrdenVentaid,xFechaOrden,xFechaEntrega,xValorTotal,xPesoTotal,xProductidOrdVent,xDireccionidOrdVent);
+        COMMIT;
+        EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR (-20010,'No se puede insertar OrdendeVenta');
+    END;
+    
+    PROCEDURE MO_OrdendeVenta (xOrdenVentaid IN NUMBER,xFechaOrden IN DATE,xFechaEntrega IN DATE,xValorTotal IN NUMBER,xPesoTotal IN NUMBER,xProductidOrdVent IN NUMBER,xDireccionidOrdVent IN NUMBER) IS
+    BEGIN
+        UPDATE OrdendeVenta SET FechaOrden = xFechaOrden, FechaEntrega = xFechaEntrega,ValorTotal = xValorTotal,PesoTotal = xPesoTotal,ProductidOrdVent = xProductidOrdVent,DireccionidOrdVent = xDireccionidOrdVent
+            WHERE xOrdenVentaid = OrdenVentaid;
+        COMMIT;
+        EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR (-20000,'No se puede Modificar');
+    END;
+    
+    PROCEDURE DEL_OrdendeVenta (xOrdenVentaid IN NUMBER) IS
+    BEGIN
+        DELETE OrdendeVenta WHERE xOrdenVentaid = OrdenVentaid;
+        COMMIT;
+        EXCEPTION
+        WHEN OTHERS THEN 
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR(-20020,'No se puede eliminar Orden de Venta');
+    END;
+    
+    PROCEDURE AD_ProgramaDistribucion (xProgramaDisid IN NUMBER,xMetododeEntrega IN VARCHAR,xOrdenVentaidPDistrib IN NUMBER) IS
+    BEGIN
+        INSERT INTO ProgramaDistribucion(ProgramaDisid,MetodoEntrega,OrdenVentaidPDistrib) VALUES (xProgramaDisid,xMetododeEntrega,xOrdenVentaidPDistrib);
+        COMMIT;
+        EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR (-20010,'No se puede insertar Programa Distribucion');
+    END;
+    
+    PROCEDURE MO_ProgramaDistribucion (xProgramaDisid IN NUMBER,xMetododeEntrega IN VARCHAR,xOrdenVentaidPDistrib IN NUMBER) IS
+    BEGIN
+        UPDATE ProgramaDistribucion SET MetodoEntrega = xMetododeEntrega, OrdenVentaidPDistrib  = xOrdenVentaidPDistrib
+            WHERE xProgramaDisid = ProgramaDisid;
+        COMMIT;
+        EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR (-20000,'No se puede Modificar Programa Distribucion');
+    END;
+    
+    PROCEDURE DEL_ProgramaDistribucion (xProgramaDisid IN NUMBER) IS
+    BEGIN
+        DELETE ProgramaDistribucion WHERE xProgramaDisid = ProgramaDisid;
+        COMMIT;
+        EXCEPTION 
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR (-20020,'No se puede eliminar Programa Distribucion');
+    END;
+    
+    FUNCTION CO_OrdendeVenta RETURN SYS_REFCURSOR IS CO_ORD SYS_REFCURSOR;
+    BEGIN
+        OPEN CO_ORD FOR
+            SELECT * FROM OrdendeVenta;
+        RETURN CO_ORD;
+    END;
+    
+    FUNCTION CO_ProgramaDistribucion RETURN SYS_REFCURSOR IS CO_PD SYS_REFCURSOR;
+    BEGIN
+        OPEN CO_PD FOR
+            SELECT * FROM OrdendeVenta;
+        RETURN CO_PD;
+    END;
+END PC_VENTAS;
+
+
+
+CREATE OR REPLACE PACKAGE BODY PC_USUARIOS IS 
+    PROCEDURE AD_Cliente (xTipoDocumento IN NUMBER,xNumeroDocumento IN VARCHAR,xNombre IN VARCHAR,xCorreo IN VARCHAR,xTelefono IN NUMBER,xDireccionCliente IN VARCHAR) IS
+    BEGIN
+        INSERT INTO Cliente(TipoDocumento,NumeroDocumento,Nombre,Correo,Telefono,DireccionCliente) VALUES (xTipoDocumento,xNumeroDocumento,xNombre,xCorreo,xTelefono,xDireccionCliente);
+        COMMIT;
+        EXCEPTION
+        WHEN OTHERS THEN 
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR (-20010,'No se puede insertar Cliente');
+    END;
+    
+    PROCEDURE MO_Cliente (xTipoDocumento IN NUMBER,xNumeroDocumento IN VARCHAR,xNombre IN VARCHAR,xCorreo IN VARCHAR,xTelefono IN NUMBER,xDireccionCliente IN VARCHAR) IS
+    BEGIN
+        UPDATE Cliente SET Nombre = xNombre,Correo = xCorreo,Telefono = xTelefono,DireccionCliente = xDireccionCliente
+            WHERE xTipoDocumento = TipoDocumento AND xNumeroDocumento = NumeroDocumento;
+        COMMIT;
+        EXCEPTION
+        WHEN OTHERS THEN 
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR (-20000,'No se puede modificar Cliente');
+    END;
+    
+    PROCEDURE DEL_Cliente (xTipoDocumento IN NUMBER, xNumeroDocumento IN VARCHAR) IS
+    BEGIN
+        DELETE Cliente WHERE TipoDocumento = xTipoDocumento AND NumeroDocumento = xNumeroDocumento;
+        COMMIT;
+        EXCEPTION
+        WHEN OTHERS THEN 
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR (-20020,'No se puede eliminar Cliente');
+    END;
+    
+    PROCEDURE AD_Direccion (xDireccionid IN NUMBER,xCiudad IN VARCHAR,xCodigoPostal IN NUMBER) IS 
+    BEGIN
+        INSERT INTO Direccion(Direccionid,Ciudad,CodigoPostal) VALUES (xDireccionid,xCiudad,xCodigoPostal);
+        COMMIT;
+        EXCEPTION
+        WHEN OTHERS THEN 
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR (-20010,'No se puede insertar Direccion');
+    END;
+    
+    PROCEDURE MO_Direccion (xDireccionid IN NUMBER,xCiudad IN VARCHAR,xCodigoPostal IN NUMBER) IS 
+    BEGIN
+        UPDATE Direccion SET Ciudad = xCiudad,CodigoPostal = xCodigoPostal
+            WHERE xDireccionid = Direccionid;
+        COMMIT;
+        EXCEPTION
+        WHEN OTHERS THEN 
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR (-20000,'No se puede modificar Direccion');
+    END;
+    
+    PROCEDURE DEL_Direccion (xDireccionid IN NUMBER) IS
+    BEGIN
+        DELETE Direccion WHERE  xDireccionid = Direccionid;
+        COMMIT;
+        EXCEPTION
+        WHEN OTHERS THEN 
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR (-20020,'No se puede eliminar Direccion');
+    END;
+    
+    PROCEDURE AD_Vendedor (xTipoDocumentoV IN NUMBER,xNumeroDocumentoV IN VARCHAR,xTienda IN VARCHAR,xNIT IN NUMBER,xCorreo IN VARCHAR) IS
+    BEGIN
+        INSERT INTO Vendedor(TipoDocumentoV,NumeroDocumentoV,Tienda,NIT,Correo) VALUES (xTipoDocumentov,xNumeroDocumentov,xTienda,xNIT,xCorreo);
+        COMMIT;
+        EXCEPTION
+        WHEN OTHERS THEN 
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR (-20010,'No se puede insertar Vendedor');
+    END;
+    
+    PROCEDURE MO_Vendedor (xTipoDocumentoV IN NUMBER,xNumeroDocumentoV IN VARCHAR,xTienda IN VARCHAR,xNIT IN NUMBER,xCorreo IN VARCHAR) IS
+    BEGIN
+        UPDATE Vendedor SET Tienda = xTienda,NIT = xNIT,Correo = xCorreo
+            WHERE xTipoDocumentoV = TipoDocumentoV AND xNumeroDocumentoV = NumeroDocumentoV;
+        COMMIT;
+        EXCEPTION
+        WHEN OTHERS THEN 
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR (-20000,'No se puede modificar Vendedor');
+    END;
+    
+    PROCEDURE DEL_Vendedor (xTipoDocumentoV IN NUMBER,xNumeroDocumentoV IN VARCHAR) IS
+    BEGIN
+        DELETE Vendedor WHERE (xTipoDocumentoV = TipoDocumentoV AND xNumeroDocumentoV = NumeroDocumentoV);
+        COMMIT;
+        EXCEPTION
+        WHEN OTHERS THEN 
+            ROLLBACK;
+            RAISE_APPLICATION_ERROR (-20020,'No se puede eliminar Vendedor');
+    END;
+    
+    FUNCTION CO_Cliente RETURN SYS_REFCURSOR IS CO_CL SYS_REFCURSOR;
+    BEGIN
+        OPEN CO_CL FOR
+            SELECT * FROM Cliente;
+        RETURN CO_CL;
+    END;
+    
+    FUNCTION CO_Direccion RETURN SYS_REFCURSOR IS CO_DR SYS_REFCURSOR;
+    BEGIN
+        OPEN CO_DR FOR
+            SELECT * FROM Direccion;
+        RETURN CO_DR;
+    END;    
+
+    FUNCTION CO_Vendedor RETURN SYS_REFCURSOR IS CO_VD SYS_REFCURSOR;
+    BEGIN
+        OPEN CO_VD FOR
+            SELECT * FROM Vendedor;
+        RETURN CO_VD;
+    END;
+END PC_USUARIOS;

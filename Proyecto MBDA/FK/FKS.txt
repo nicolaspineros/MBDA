@@ -1,0 +1,35 @@
+ALTER TABLE ClienteOrdenDeVenta ADD CONSTRAINT FK_ClienteOrdenDeVenta_Cliente
+    FOREIGN KEY(TipoDocumento,NumeroDocumento) REFERENCES Cliente(TipoDocumento,NumeroDocumento);
+
+ALTER TABLE CatalogoVendedor ADD CONSTRAINT FK_CatalogoVendedor_Vendedor
+    FOREIGN KEY(TipoDocumentoV,NumeroDocumentoV) REFERENCES Vendedor(TipoDocumentoV,NumeroDocumentoV);
+    
+ALTER TABLE CatalogoVendedor ADD CONSTRAINT FK_CatalogoVendedor_Catalogo
+    FOREIGN KEY(Catalogoid) REFERENCES Catalogo(Catalogoid);
+    
+ALTER TABLE ProductoCatalogo ADD CONSTRAINT FK_ProductoCatalogo_Producto
+    FOREIGN KEY(Productoid) REFERENCES Producto(Productoid);
+
+ALTER TABLE ProductoCatalogo ADD CONSTRAINT FK_ProductoCatalogo_Catalogo
+    FOREIGN KEY(Catalogoid) REFERENCES Catalogo(Catalogoid);
+    
+ALTER TABLE ClienteOrdenDeVenta ADD CONSTRAINT FK_ClienteOrdenV_OrdenV
+    FOREIGN KEY(OrdenVentaid) REFERENCES OrdenDeVenta(OrdenVentaid);
+    
+ALTER TABLE OrdenDeVenta ADD CONSTRAINT FK_OrdenDeVenta_Producto
+    FOREIGN KEY(ProductidOrdVent) REFERENCES Producto(Productoid);
+    
+ALTER TABLE Categoria ADD CONSTRAINT FK_Categoria_Producto
+    FOREIGN KEY(ProductoidCategoria) REFERENCES Producto(Productoid);
+    
+ALTER TABLE ProgramaDistribucion ADD CONSTRAINT Fk_ProgramaDistri_OrdenDeVenta
+    FOREIGN KEY(OrdenVentaidPDistrib) REFERENCES OrdenDeVenta(OrdenVentaid);
+    
+ALTER TABLE OrdenDeVenta ADD CONSTRAINT FK_OrdenDeVenta_Direccion
+    FOREIGN KEY (DirecionidOrdVent) REFERENCES Direccion(Direccionid);
+
+ALTER TABLE Vendedor ADD CONSTRAINT FK_Vendedor_Cliente
+    FOREIGN KEY(TipoDocumentoV,NumeroDocumentoV) REFERENCES Cliente(TipoDocumento,NumeroDocumento);
+
+ALTER TABLE Cliente ADD CONSTRAINT FK_Cliente_Direccion
+    FOREIGN KEY(DireccionCliente) REFERENCES Direccion(Direccionid);

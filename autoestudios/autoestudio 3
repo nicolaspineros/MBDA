@@ -1,0 +1,24 @@
+ALTER TABLE ProductDescription ADD CONSTRAINT PK_ProductDescription PRIMARY KEY ProductDescriptionID
+ALTER TABLE ProductModelProductDescription ADD CONSTRAINT PK_ProductModelProductDescription PRIMARY KEY ProductModelID
+ALTER TABLE ProductModelProductDescription ADD CONSTRAINT PK_ProductModelProductDescriptionC PRIMARY KEY Culture
+ALTER TABLE ProductModel ADD CONSTRAINT PK_ProductModel PRIMARY KEY ProductModelID
+ALTER TABLE Product ADD CONSTRAINT PK_ProductID PRIMARY KEY ProductID
+ALTER TABLE SalesOrderDetail ADD CONSTRAINT PK_SalesOrderDetail PRIMARY KEY SalesOrderID
+ALTER TABLE SalesOrderHeader ADD CONSTRAINT PK_SalesOrderHeader PRIMARY KEY SalesOrderID
+ALTER TABLE ProductCategory ADD CONSTRAINT PK_ProductCategory PRIMARY KEY ProductCategoryID
+ALTER TABLE Customer ADD CONSTRAINT PK_Customer PRIMARY KEY CustomerID
+ALTER TABLE Address ADD CONSTRAINT PK_Address PRIMARY KEY AddressID
+ALTER TABLE CustomerAddress ADD CONSTRAINT PK_CustomerAddress PRIMARY KEY CustomerID
+ALTER TABLE CustomerAddress ADD CONSTRAINT PK_CustomerAddressT PRIMARY KEY AddressType
+
+ALTER TABLE ProductDescription ADD CONSTRAINT FK_ProductDescription FOREIGN KEY (ProductDescriptionID) REFERENCES ProductModelProductDescription(ProductDescriptionID)
+ALTER TABLE ProductModel ADD CONSTRAINT FK_ProductModel FOREIGN KEY (ProductModelID) REFERENCES Product(ProductModelID)
+ALTER TABLE ProductCategory ADD CONSTRAINT FK_ProductCategory FOREIGN KEY (ProductCategoryID) REFERENCES Product(ProductCategoryID)
+ALTER TABLE ProductCategory ADD CONSTRAINT FK_ParentProductCategory FOREIGN KEY (ProductCategoryID) REFERENCES ProductCategory(ParentProductCategoryID)
+ALTER TABLE SalseOrderHeader ADD CONSTRAINT FK_SalesOrderHeader FOREIGN KEY (SalesOrderID) REFERENCES SalesOrderDetail(SalesOrderID)
+ALTER TABLE Product ADD CONSTRAINT FK_Product FOREIGN KEY (ProductID) REFERENCES SalesOrderDetail(ProductID)
+ALTER TABLE Address ADD CONSTRAINT FK_Address FOREIGN KEY (AddressID) REFERENCES CustomerAddress(AddressID)
+ALTER TABLE Customer ADD CONSTRAINT FK_Customer FOREIGN KEY (CustomerID) REFERENCES CustomerAddress(CustomerID)
+ALTER TABLE Customer ADD CONSTRAINT FK_Customer FOREIGN KEY (CustomerID) REFERENCES SalesOrderHeader(CustomerID)
+ALTER TABLE Address ADD CONSTRAINT FK_Address FOREIGN KEY (BillToAddressID) REFERENCES SalesOrderHeader(BillToAddressID)
+ALTER TABLE Address ADD CONSTRAINT FK_Address FOREIGN KEY (ShipToAddressID) REFERENCES SalesOrderHeader(ShipToAddressID)

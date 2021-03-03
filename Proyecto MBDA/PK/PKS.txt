@@ -1,0 +1,36 @@
+
+LTER TABLE Cliente ADD CONSTRAINT PK_Cliente
+    PRIMARY KEY(TipoDocumento,NumeroDocumento);
+    
+ALTER TABLE HistorialCliente ADD CONSTRAINT PK_HistorialCliente
+    PRIMARY KEY(TipoDocumento_C,NumeroDocumento_C);
+    
+ALTER TABLE Direccion ADD CONSTRAINT PK_Direccion
+    PRIMARY KEY(Direccionid);
+    
+ALTER TABLE OrdenDeVenta ADD CONSTRAINT PK_OrdendeVenta
+    PRIMARY KEY(OrdenVentaid);
+    
+ALTER TABLE ProgramaDistribucion ADD CONSTRAINT PK_ProgramaDistribucion
+    PRIMARY KEY(PDistribucionid);
+
+ALTER TABLE Producto ADD CONSTRAINT PK_Producto
+    PRIMARY KEY(Productoid);
+
+ALTER TABLE Categoria ADD CONSTRAINT PK_Categoria
+    PRIMARY KEY(Categoriaid);
+    
+ALTER TABLE Catalogo ADD CONSTRAINT PK_Catalogo
+    PRIMARY KEY(Catalogoid);
+    
+ALTER TABLE Vendedor ADD CONSTRAINT PK_Vendedor
+    PRIMARY KEY(TipoDocumentoV,NumeroDocumentoV);
+    
+ALTER TABLE ClienteOrdenDeVenta ADD CONSTRAINT PK_ClienteOrdenDeVenta
+    PRIMARY KEY(TipoDocumento,NumeroDocumento,OrdenVentaid);
+    
+ALTER TABLE CatalogoVendedor ADD CONSTRAINT PK_CatalogoVendedor
+    PRIMARY KEY(TipoDocumentoV,NumeroDocumentoV,Catalogoid);
+    
+ALTER TABLE ProductoCatalogo ADD CONSTRAINT PK_ProductoCatalogo
+    PRIMARY KEY(Catalogoid,Productoid);

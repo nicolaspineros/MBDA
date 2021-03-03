@@ -1,0 +1,49 @@
+create or replace PACKAGE PC_PRODUCTO IS
+    PROCEDURE AD_Producto (xProductoid IN NUMBER,xNombre IN VARCHAR,xPrecio IN float,xMarca IN VARCHAR,xPeso IN float);
+    PROCEDURE MO_Producto (xProductoid IN NUMBER,xNombre IN VARCHAR,xPrecio IN float,xMarca IN VARCHAR,xPeso IN float);
+    PROCEDURE DEL_Producto (xProductoid IN NUMBER); 
+
+    PROCEDURE AD_Categoria (xCategoriaid IN VARCHAR,xNombreCategoria IN VARCHAR);
+    PROCEDURE MO_Categoria (xCategoriaid IN VARCHAR,xNombreCategoria IN VARCHAR);
+
+    PROCEDURE AD_Catalogo (xCatalogoid IN VARCHAR,xTienda IN VARCHAR,xFechaTemporada IN date,xnombreCatalogo IN VARCHAR);
+    PROCEDURE MO_Catalogo (xCatalogoid IN VARCHAR,xTienda IN VARCHAR,xFechaTemporada IN date,xnombreCatalogo IN VARCHAR);
+
+    FUNCTION CO_Productos RETURN SYS_REFCURSOR;
+    FUNCTION CO_Catalogo RETURN SYS_REFCURSOR;
+    FUNCTION CO_Categoria RETURN SYS_REFCURSOR;
+END PC_PRODUCTO;
+
+
+
+CREATE OR REPLACE PACKAGE PC_VENTAS IS
+    PROCEDURE AD_OrdendeVenta (xOrdenVentaid IN NUMBER,xFechaOrden IN DATE,xFechaEntrega IN DATE,xValorTotal IN NUMBER,xPesoTotal IN NUMBER,xProductidOrdVent IN NUMBER,xDireccionidOrdVent IN NUMBER);
+    PROCEDURE MO_OrdendeVenta (xOrdenVentaid IN NUMBER,xFechaOrden IN DATE,xFechaEntrega IN DATE,xValorTotal IN NUMBER,xPesoTotal IN NUMBER,xProductidOrdVent IN NUMBER,xDireccionidOrdVent IN NUMBER);
+    PROCEDURE DEL_OrdendeVenta (xOrdenVentaid IN NUMBER);
+    
+    PROCEDURE AD_ProgramaDistribucion (xProgramaDisid IN NUMBER,xMetododeEntrega IN VARCHAR,xOrdenVentaidPDistrib IN NUMBER);
+    PROCEDURE MO_ProgramaDistribucion (xProgramaDisid IN NUMBER,xMetododeEntrega IN VARCHAR,xOrdenVentaidPDistrib IN NUMBER);
+    PROCEDURE DEL_ProgramaDistribucion  (xProgramaDisid IN NUMBER);
+    
+    FUNCTION CO_OrdendeVenta RETURN SYS_REFCURSOR;
+    FUNCTION CO_ProgramaDistribucion RETURN SYS_REFCURSOR;
+END PC_VENTAS;
+
+
+create or replace PACKAGE PC_USUARIOS IS
+    PROCEDURE AD_Cliente (xTipoDocumento IN NUMBER,xNumeroDocumento IN VARCHAR,xNombre IN VARCHAR,xCorreo IN VARCHAR,xTelefono IN NUMBER,xDireccionCliente IN VARCHAR);
+    PROCEDURE MO_Cliente (xTipoDocumento IN NUMBER,xNumeroDocumento IN VARCHAR,xNombre IN VARCHAR,xCorreo IN VARCHAR,xTelefono IN NUMBER,xDireccionCliente IN VARCHAR);
+    PROCEDURE DEL_Cliente (xTipoDocumento IN NUMBER, xNumeroDocumento IN VARCHAR);
+
+    PROCEDURE AD_Direccion (xDireccionid IN NUMBER,xCiudad IN VARCHAR,xCodigoPostal IN NUMBER);
+    PROCEDURE MO_Direccion (xDireccionid IN NUMBER,xCiudad IN VARCHAR,xCodigoPostal IN NUMBER);
+    PROCEDURE DEL_Direccion (xDireccionid IN NUMBER);
+
+    PROCEDURE AD_Vendedor (xTipoDocumentoV IN NUMBER,xNumeroDocumentoV IN VARCHAR,xTienda IN VARCHAR,xNIT IN NUMBER,xCorreo IN VARCHAR);
+    PROCEDURE MO_Vendedor (xTipoDocumentoV IN NUMBER,xNumeroDocumentoV IN VARCHAR,xTienda IN VARCHAR,xNIT IN NUMBER,xCorreo IN VARCHAR);
+    PROCEDURE DEL_Vendedor (xTipoDocumentoV IN NUMBER,xNumeroDocumentoV IN VARCHAR);
+
+    FUNCTION CO_Cliente RETURN SYS_REFCURSOR;
+    FUNCTION CO_Direccion RETURN SYS_REFCURSOR;
+    FUNCTION CO_Vendedor RETURN SYS_REFCURSOR;
+END PC_USUARIOS;

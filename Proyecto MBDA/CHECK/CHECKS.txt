@@ -1,0 +1,24 @@
+
+ALTER TABLE BikeWorld ADD CONSTRAINT CK_BikeWorld_TCorreo
+CHECK (correo like ('%@%') and correo not like ('@%') 
+        and correo not like ('%@') and correo not like ('%@%@%'));
+
+ALTER TABLE Cliente ADD CONSTRAINT CK_Cliente_TCorreo
+CHECK (correo like ('%@%') and correo not like ('@%') 
+        and correo not like ('%@') and correo not like ('%@%@%'));
+
+ALTER TABLE Vendedor ADD CONSTRAINT CK_Vendedor_TCorreo
+CHECK (correo like ('%@%.%') and correo not like ('@%') 
+        and correo not like ('%@') and correo not like ('%@%@%'));
+
+ALTER TABLE Vendedor ADD CONSTRAINT CK_Vendedor_Tnit
+CHECK(NIT = 10 );
+
+ALTER TABLE Cliente ADD CONSTRAINT CK_Cliente_TDocumento
+CHECK(TipoDocumento IN ('CC','TI','CE'));
+
+ALTER TABLE Vendedor ADD CONSTRAINT CK_Vendedor_TDocumento
+CHECK (TipoDocumentoV IN ('CC','TI','CE'));
+
+ALTER TABLE HistorialCliente ADD CONSTRAINT CK_HistorialCliente_TDocumento
+CHECK (TipoDocumento_C IN ('CC','TI','CE'));

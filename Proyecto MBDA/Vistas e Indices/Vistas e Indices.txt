@@ -1,0 +1,32 @@
+CREATE VIEW ProductosOrdenados AS
+	(SELECT Producto.Nombre, OrdenDeVenta.OrdenVentaid 
+		FROM Producto 
+        JOIN OrdenDeVenta ON (OrdendeVenta.ProductidOrdVent = Producto.Productoid));
+
+
+CREATE VIEW ZonasOrdenes AS
+	(SELECT ProgramaDistribucion.MetodoEntrega, OrdendeVenta.OrdenVentaid
+		FROM ProgramaDistribucion 
+        JOIN OrdendeVenta ON (ProgramaDistribucion.OrdenVentaidPDistrib = OrdendeVenta.OrdenVentaid)); 
+        
+
+CREATE UNIQUE INDEX I_BikeWorld_NIT
+    ON BikeWorld(NIT);
+    
+CREATE UNIQUE INDEX I_Productos_Productid
+    ON Producto(Productid);
+    
+CREATE UNIQUE INDEX I_Productos_Nombre
+    ON Producto(Nombre);    
+    
+CREATE UNIQUE INDEX I_OrdendeVenta_OrdenVentaid
+    ON OrdendeVenta(OrdenVentaid);
+    
+CREATE UNIQUE INDEX I_Cliente_tipoDocumento
+    ON Cliente(tipoDocumento);
+    
+CREATE UNIQUE INDEX I_Cliente_numeroDocumento
+    ON Cliente(numeroDocumento);
+    
+CREATE UNIQUE INDEX I_Vendedor_Tienda
+    ON Vendedor(Tienda);    

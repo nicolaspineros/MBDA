@@ -1,0 +1,145 @@
+
+CREATE TABLE ProductModel(
+		ProductModelID VARCHAR(20) NOT NULL,
+		NAME VARCHAR(20) NOT NULL,
+		DETALLES XMLTYPE NOT NULL);
+		
+ALTER TABLE ProductModel ADD CONSTRAINT PK_ProductModel
+PRIMARY KEY (ProductModelID);
+
+/*Poblar*/
+
+INSERT INTO ProductModel VALUES (1,'Camisa CK',
+'<?xml version = "1.0"?>
+<detalle>
+		<tipodetela>
+			nombre= "cotton"
+		</tipodetela>
+		<colores>
+			<color nombre= "rojo"></color>
+			<color nombre= "negro"></color>
+			<color nombre= "azul"></color>			
+		</colores>
+		<Tallas>
+			<talla nombre= "S"></talla>
+			<talla nombre= "M"></talla>
+			<talla nombre= "L"></talla>
+		</Tallas>
+		<Genero>
+			<categoria destino= "women"></categoria>
+			<categoria destino= "men"></categoria>
+			<categoria destino= "girls"></categoria>
+			<categoria destino= "boys"></categoria>
+			<categoria destino= "neutral"></categoria>
+		</Genero>
+		<Descripcion>
+			<palabra nombre= "Sensational"></palabra>
+			<palabra nombre= "Remarkable"></palabra>
+			<palabra nombre= "Revolutionary"></palabra>
+		</Descripcion>
+		<Marca nombre="Calvin Klein"></Marca>
+		<Evaluaciones>
+			<temporada nombre="05" calificacion="4"></temporada>
+			<temporada nombre="14" calificacion="2"></temporada>
+			<temporada nombre="01" calificacion="3"></temporada>
+			<temporada nombre="20" calificacion="1"></temporada>
+		</Evaluaciones>
+</detalle>');
+
+INSERT INTO ProductModel VALUES (2,'Buso Polo',
+'<?xml version = "1.0"?>
+<detalle>
+		<tipodetela>
+			nombre= "jersey"
+		</tipodetela>
+		<colores>
+			<color nombre= "blanco"></color>
+			<color nombre= "rojo"></color>
+			<color nombre= "verde"></color>
+			<color nombre= "vinotinto"></color>
+			<color nombre= "azul"></color>			
+		</colores>
+		<Tallas>
+			<talla nombre= "S"></talla>
+			<talla nombre= "M"></talla>
+			<talla nombre= "L"></talla>
+		</Tallas>
+		<Genero>
+			<categoria destino= "women"></categoria>
+			<categoria destino= "men"></categoria>
+		</Genero>
+		<Descripcion>
+			<palabra nombre= "Sensational"></palabra>
+			<palabra nombre= "Remarkable"></palabra>
+		</Descripcion>
+		<Marca nombre="Polo"></Marca>
+		<Evaluaciones>
+			<temporada nombre="02" calificacion="3"></temporada>
+			<temporada nombre="54" calificacion="1"></temporada>
+			<temporada nombre="31" calificacion="5"></temporada>
+			<temporada nombre="22" calificacion="2"></temporada>
+			<temporada nombre="72" calificacion="4"></temporada>
+		</Evaluaciones>
+</detalle>');
+
+INSERT INTO ProductModel VALUES (3,'Zapatos Velez',
+'<?xml version = "1.0"?>
+<detalle>
+		<tipodetela>
+			nombre= "leather"
+		</tipodetela>
+		<colores>
+			<color nombre= "rojo"></color>
+			<color nombre= "negro"></color>
+			<color nombre= "azul"></color>		
+			<color nombre= "cafe"></color>			
+		</colores>
+		<Tallas>
+			<talla nombre= "S"></talla>
+			<talla nombre= "M"></talla>
+			<talla nombre= "L"></talla>
+		</Tallas>
+		<Genero>
+			<categoria destino= "women"></categoria>
+			<categoria destino= "men"></categoria>
+			<categoria destino= "girls"></categoria>
+			<categoria destino= "boys"></categoria>
+			<categoria destino= "neutral"></categoria>
+		</Genero>
+		<Descripcion>
+			<palabra nombre= "Sensational"></palabra>
+			<palabra nombre= "Remarkable"></palabra>
+			<palabra nombre= "Stylish"></palabra>
+		</Descripcion>
+		<Marca nombre="Velez"></Marca>
+		<Evaluaciones>
+			<temporada nombre="95" calificacion="5"></temporada>
+			<temporada nombre="47" calificacion="1"></temporada>
+			<temporada nombre="06" calificacion="3"></temporada>
+			<temporada nombre="29" calificacion="4"></temporada>
+		</Evaluaciones>
+</detalle>');	
+
+/*Consultas*/
+
+1. Los modelos de un tipo de tela dado
+
+	SELECT EXTRACTVALUE(/detalle/tipodetela/@*) FROM ProductModel
+	
+2. Los modelos que vienen en el mayor numero de colores 
+
+	SELECT EXTRACTVALUE(/detalle[max(colores/@nombre)]/@nombre) FROM ProductModel
+	
+3. Los modelos rosados para mujeres descritos como sensacionales
+
+	SELECT EXTRACTVALUE(/detalle[Genero/Categoria/@nombre="women" and colores/@nombre="rosado" and Descripcion/@palabra="Sensational"]/@nombre) FROM ProductModel
+	
+4. Los modelos de una marca dada
+
+	SELECT EXTRACTVALUE(//detalle/marca[@nombre]) FROM ProductModel
+	
+5. Los modelos que lograron una evaluacion de 5 el año pasado
+
+	SELECT EXTRACTVALUE(/*detalle/Evaluaciones/@calificacion="5") FROM ProductModel
+
+	

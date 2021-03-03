@@ -1,0 +1,45 @@
+
+
+
+ALTER TABLE Cliente ADD CONSTRAINT CK_Cliente_TCorreo
+CHECK (correo like ('%@%') and correo not like ('@%') 
+        and correo not like ('%@') and correo not like ('%@%@%'));
+
+ALTER TABLE Vendedor ADD CONSTRAINT CK_Vendedor_TCorreo
+CHECK (correo like ('%@%.%') and correo not like ('@%') 
+        and correo not like ('%@') and correo not like ('%@%@%'));
+
+CREATE DOMAIN TDocumento AS VARCHAR(2) CONSTRAINT
+CHECK(VALUE IN("C.C","T.I","C.E");
+
+ALTER TABLE Vendedor ADD CONSTRAINT CK_Vendedor_Tnit
+CHECK(NIT = 10 );
+
+ALTER TABLE Producto ADD CONSTRAINT CK_Producto_PTalla
+CHECK(Talla IN("S","M","L","XL"));
+
+ALTER TABLE Producto ADD CONSTRAINT CK_Producto_TGenero
+CHECK(Genero IN("Masculino","Femenino");
+
+ALTER TABLE Producto ADD CONSTRAINT CK_Producto_Color
+CHECK(color IN("amarillo","azul","rojo","verde","blanco","negro","morado");
+
+ALTER TABLE Categoria ADD CONSTRAINT CK_Categoria_Tcategoria
+CHECK(NombreCategoria IN("Ruta","XC","Enduro","Downhill","BMX","Trial","Bicicross"));
+
+
+ALTER TABLE Cliente ADD CONSTRAINT CK_Cliente_TDocumento
+CHECK(tipoDocumento IN("C.C","T.I","C.E"));
+
+
+ALTER TABLE Vendedor ADD CONSTRAINT CK_Vendedor_TDocumento
+CHECK(tipoDocumentoV IN("C.C","T.I","C.E"));
+
+
+ALTER TABLE HistorialCliente ADD CONSTRAINT CK_HistorialCliente_TDocumento
+CHECK(tipoDocumento_C IN("C.C","T.I","C.E"));
+
+
+
+
+

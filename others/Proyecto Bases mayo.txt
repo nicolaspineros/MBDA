@@ -1,0 +1,6 @@
+Proyecto: C:\Users\Ozkr_\AppData\Roaming\SQL Developer\system19.2.1.247.2212\o.sqldeveloper\projects\IdeConnections#Proyecto+Bases+de+Datos.jpr
+    Disparador BD2157667.HISTORIALCLIENTE_TG1@Proyecto Bases de Datos
+        Error(10,5): PLS-00049: bad bind variable 'NEW.NUMERODECOMPRAS'
+        Error(13,5): PLS-00049: bad bind variable 'NEW.MONTOCOMPRAS'
+        Error(14,46): PLS-00049: bad bind variable 'NEW.TIPODOCUMENTO_C'
+        Error(14,72): PLS-00049: bad bind variable 'NEW.NUMERODOCUMENTO_C'

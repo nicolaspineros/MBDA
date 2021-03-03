@@ -1,0 +1,150 @@
+--TABLAS--
+
+CREATE TABLE Participante(
+    tid VARCHAR(3) NOT NULL,
+    nid VARCHAR(15) NOT NULL,
+    email VARCHAR(100),
+    pais VARCHAR(30) NOT NULL,
+    fRegistro DATE NOT NULL,
+    fRetiro DATE,
+    PRIMARY KEY(tid,nid)
+);
+
+CREATE TABLE Atleta(
+    tID VARCHAR(3) NOT NULL,
+    nID VARCHAR(15) NOT NULL,
+    tIDAtleta VARCHAR(3) NOT NULL,
+    nIDAtleta VARCHAR(15) NOT NULL,
+    rh VARCHAR(3) NOT NULL,
+    tSangre VARCHAR(2)NOT NULL,
+    PRIMARY KEY(tidAtleta,nidAtleta)
+);
+
+CREATE TABLE Entrenador(
+    tIDEntrenador VARCHAR(3) NOT NULL,
+    nIDEntrenador VARCHAR(15) NOT NULL,
+    seguro VARCHAR(3) NOT NULL,
+    PRIMARY KEY(nidEntrenador,tidEntrenador)
+    );
+
+CREATE TABLE Evaluacion(
+    numero INTEGER NOT NULL,
+    fecha DATE NOT NULL,
+    puntaje INTEGER,
+    PRIMARY KEY(numero)
+);
+CREATE TABLE Registro(
+    numero NUMBER(8) NOT NULL,
+    fecha DATE NOT NULL,
+    hora NUMBER(4),
+    sensor VARCHAR(1) NOT NULL,
+    valor NUMBER(8) NOT NULL
+);
+
+CREATE TABLE Actividad(
+    numero NUMBER(8) NOT NULL,
+    fechainicio DATE NOT NULL,
+    horainicio NUMBER(4) NOT NULL,
+    tiempoToal NUMBER(4) NOT NULL,
+    pulsacionesProm NUMBER NOT NULL
+);
+
+CREATE TABLE EntrenadoPor(
+    tIDAtleta VARCHAR(3) NOT NULL,
+    nIDAtleta VARCHAR(15) NOT NULL,
+    tIDEntrenador VARCHAR(3) NOT NULL,
+    nIDEntrenador VARCHAR(15) NOT NULL
+);
+
+CREATE TABLE Sesion(
+    dia NUMBER(1) NOT NULL,
+    orden INTEGER NOT NULL,
+    duracion INTEGER NOT NULL,
+    descripcion VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE SimilarA(
+    porcentaje INTEGER,
+    numero INTEGER NOT NULL
+);
+
+CREATE TABLE ContactoDe(
+    tID VARCHAR(3) NOT NULL,
+    nID VARCHAR(15) NOT NULL,
+    tIDAtleta VARCHAR(3) NOT NULL,
+    nIDAtleta VARCHAR(15) NOT NULL
+);
+
+CREATE TABLE libre(
+    libreID INTEGER NOT NULL,
+    IDAtleta INTEGER NOT NULL,
+    numero INTEGER NOT NULL
+);
+
+CREATE TABLE planeada(
+    planeadaID NUMBER(3) NOT NULL,
+    nombre VARCHAR NOT NULL,
+    tipo VARCHAR NOT NULL,
+    fechaCreacion DATE NOT NULL,
+    entrenador VARCHAR NOT NULL,
+    atleta VARCHAR NOT NULL
+);
+
+CREATE TABLE Fotos(
+    IDFoto VARCHAR(150) NOT NULL,
+    numerofoto CHAR
+);
+
+--Restricciones declarativas--
+
+ALTER TABLE Actividad ADD CONSTRAINT PK_Actividad PRIMARY KEY(numero);
+ALTER TABLE Evaluacion ADD CONSTRAINT PK_Evaluacion PRIMARY KEY(evaluacionID);
+ALTER TABLE Registro ADD CONSTRAINT PK_Registro PRIMARY KEY(numero);
+ALTER TABLE SimilarA ADD CONSTRAINT PK_SimilarA PRIMARY KEY(numero);
+ALTER TABLE planeada ADD CONSTRAINT PK_planeada PRIMARY KEY(planeadaID);
+ALTER TABLE Fotos ADD CONSTRAINT PK_Fotos PRIMARY KEY(IDFoto);
+ALTER TABLE libre ADD CONSTRAINT PK_libre PRIMARY KEY(libreID);
+ALTER TABLE EntrenadoPor ADD CONSTRAINT PK_EntrenadoPor PRIMARY KEY(tIDAtleta);
+ALTER TABLE EntrenadoPor ADD CONSTRAINT PK_EntrenadoPor PRIMARY KEY(nIDAtleta);
+ALTER TABLE EntrenadoPor ADD CONSTRAINT PK_EntrenadoPor PRIMARY KEY(tIDEntrenador);
+ALTER TABLE EntrenadoPor ADD CONSTRAINT PK_EntrenadoPor PRIMARY KEY(tIDEntrenador);
+ALTER TABLE ContactoDe ADD CONSTRAINT PK_ContactoDe PRIMARY KEY(tIDAtleta);
+ALTER TABLE ContactoDe ADD CONSTRAINT PK_ContactoDe PRIMARY KEY(nIDAtleta);
+ALTER TABLE ContactoDe ADD CONSTRAINT PK_ContactoDe PRIMARY KEY(tIDEntrenador);
+ALTER TABLE ContactoDe ADD CONSTRAINT PK_ContactoDe PRIMARY KEY(tIDEntrenador);
+ALTER TABLE Atleta ADD CONSTRAINT PK_Atleta PRIMARY KEY(tIDAtleta);
+ALTER TABLE Atleta ADD CONSTRAINT PK_Atleta PRIMARY KEY(tIDAtleta);
+ALTER TABLE Sesion ADD CONSTRAINT PK_Sesion PRIMARY KEY(idsesion);
+ALTER TABLE Entrenador ADD CONSTRAINT PK_Entrenador PRIMARY KEY(tIDEntrenador);
+ALTER TABLE Entrenador ADD CONSTRAINT PK_Entrenador PRIMARY KEY(nIDEntrenador);
+
+ALTER TABLE Fotos ADD CONSTRAINT FK_Fotos_Actividad FOREIGN KEY(IDFoto) REFERENCES Actividad(numero);
+ALTER TABLE Reistro ADD CONSTRAINT FK_Registro_Actividad FOREIGN KEY(numero) REFERENCES Actividad(numero);
+ALTER TABLE Evaluacion ADD CONSTRAINT FK_Evaluacion_Actividad FOREIGN KEY(numero) REFERENCES Actividad(numero);
+ALTER TABLE libre ADD CONSTRAINT FK_libre_Actividad FOREIGN KEY(libreID) REFERENCES Actividad(numero);
+ALTER TABLE libre ADD CONSTRAINT FK_libre_Atleta FOREIGN KEY(IDAtleta) REFERENCES Atleta(nIDAtleta);
+ALTER TABLE libre ADD CONSTRAINT FK_libre_Atleta FOREIGN KEY(IDAtleta) REFERENCES Atleta(tIDAtleta);
+ALTER TABLE SimiliarA ADD CONSTRAINT FK_SimilarA_Evaluacion FOREIGN KEY(similarID) REFERENCES Evaluacion(evaluacionID);
+ALTER TABLE Entrenador ADD CONSTRAINT FK_Entrenador_Participante FOREIGN KEY(tID) REFERENCES Participante(tID);
+ALTER TABLE Entrenador ADD CONSTRAINT FK_Entrenador_Participante FOREIGN KEY(nID) REFERENCES Participante(nID);
+ALTER TABLE EntrenadoPor ADD CONSTRAINT FK_EntrenadoPor_Atleta FOREIGN KEY (tIDAtleta) REFERENCES Atleta(tIDAtleta);
+ALTER TABLE EntrenadoPor ADD CONSTRAINT FK_EntrenadoPor_Atleta FOREIGN KEY (nIDAtleta) REFERENCES Atleta(nIDAtleta);
+ALTER TABLE EntrenadoPor ADD CONSTRAINT FK_EntrenadoPor_Entrenador FOREIGN KEY (tIDEntrenador) REFERENCES Atleta(tIDEntrenador);
+ALTER TABLE EntrenadoPor ADD CONSTRAINT FK_EntrenadoPor_Entrenador FOREIGN KEY (nIDEntrenador) REFERENCES Atleta(nIDEntrenador);
+ALTER TABLE planeada ADD CONSTRAINT FK_planeada_Actividad FOREIGN KEY(planeadaID) REFERENCES Actividad(numero);
+ALTER TABLE planeada ADD CONSTRAINT FK_planeada_Sesion FOREIGN KEY(planeadaID) REFERENCES Actividad(idsesion);
+ALTER TABLE planeada ADD CONSTRAINT FK_planeada_Entrenador FOREIGN KEY(entrenador) REFERENCES Entrenador(tIDEntrenador);
+ALTER TABLE planeada ADD CONSTRAINT FK_planeada_Entrenador FOREIGN KEY(entrenador) REFERENCES Entrenador(nIDEntrenador);
+ALTER TABLE planeada ADD CONSTRAINT FK_planeada_Atleta FOREIGN KEY(atleta) REFERENCES Entrenador(tIDAtleta);
+ALTER TABLE planeada ADD CONSTRAINT FK_planeada_Atleta FOREIGN KEY(atleta) REFERENCES Entrenador(nIDAtleta);
+ALTER TABLE Sesion ADD CONSTRAINT FK_Sesion_Atleta FOREIGN KEY(IDAtleta) REFERENCES Actividad(tIDAtleta);
+ALTER TABLE Sesion ADD CONSTRAINT FK_Sesion_Atleta FOREIGN KEY(IDAtleta) REFERENCES Actividad(nIDAtleta);
+ALTER TABLE ContactoDe ADD CONSTRAINT FK_ContactoDe_Entrenador FOREIGN KEY (tIDEntrenador) REFERENCES Entrenador(tIDEntrenador);
+ALTER TABLE ContactoDe ADD CONSTRAINT FK_ContactoDe_Entrenador FOREIGN KEY (nIDEntrenador) REFERENCES Entrenador(nIDEntrenador);
+ALTER TABLE ContactoDe ADD CONSTRAINT FK_ContactoDe_Atleta FOREIGN KEY (tIDAtleta) REFERENCES Atleta(tIDAtleta);
+ALTER TABLE ContactoDe ADD CONSTRAINT FK_ContactoDe_Atleta FOREIGN KEY (nIDAtleta) REFERENCES Atleta(nIDAtleta);
+
+
+
+
+    |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |

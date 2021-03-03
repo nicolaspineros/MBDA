@@ -1,0 +1,7 @@
+
+INSERT INTO BIKEWORLD(NIT,Correo,Telefono,Direccion) VALUES(1234567890,'bikeworld@gmail.com','2259068','AV 26 #68')
+INSERT INTO PRODUCTO(Productoid,Nombre,Precio,Marca,Peso) VALUES(1,'Marco BMX',250000,'GW',65)
+INSERT INTO PRODUCTO(Productoid,Nombre,Precio,Marca,Peso) VALUES(1,'Guantes',50000,'GW',20)
+INSERT INTO PRODUCTO(Productoid,Nombre,Precio,Marca,Peso) VALUES(1,'Casco',200000,'OPTIMA',30)
+INSERT INTO PRODUCTO(Productoid,Nombre,Precio,Marca,Peso) VALUES(1,'Gafas',20000,'OPTIMA',5)
+
